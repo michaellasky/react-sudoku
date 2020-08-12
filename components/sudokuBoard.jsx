@@ -147,9 +147,29 @@ const SudokuBoard = ({seed, symbols, decimationFactor}) => {
             }
 
             div[name="sudoku container"].solved {
-                background-color: #ff0000;
+                background: linear-gradient(27deg, #1dff00, #c000ff);
+                background-size: 400% 400%;
+            
+                -webkit-animation: AnimationName 15s ease infinite;
+                -moz-animation: AnimationName 15s ease infinite;
+                animation: AnimationName 15s ease infinite;
             }
-
+            
+            @-webkit-keyframes AnimationName {
+                0%{background-position:99% 0%}
+                50%{background-position:2% 100%}
+                100%{background-position:99% 0%}
+            }
+            @-moz-keyframes AnimationName {
+                0%{background-position:99% 0%}
+                50%{background-position:2% 100%}
+                100%{background-position:99% 0%}
+            }
+            @keyframes AnimationName {
+                0%{background-position:99% 0%}
+                50%{background-position:2% 100%}
+                100%{background-position:99% 0%}
+            }
         `}</style>
         </>
     );
