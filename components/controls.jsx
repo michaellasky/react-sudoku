@@ -41,7 +41,7 @@ const Controls = ({
         <>
         <div name='controls'>
             <SymbolSelector {...{symbols, state, onSelectSymbol }} />
-            <fieldset name="button container">
+            <div name="button container">
                 <span>
                     <button onClick={() => setNewGameModalOpen(true)}>
                         Main Menu
@@ -65,7 +65,7 @@ const Controls = ({
                         Erase
                     </label>
                 </span>
-            </fieldset>
+            </div>
 
         </div>
         <Modal 
@@ -80,7 +80,7 @@ const Controls = ({
             </span>
         </Modal>
         <style jsx>{`
-            div {
+            div[name="controls"] {
                 background-color: #ff0000;
                 background-color: #555;
                 border: 1px solid #555;
@@ -88,7 +88,7 @@ const Controls = ({
                 text-align: center;
             }
 
-            fieldset[name="button container"] {
+            div[name="button container"] {
                 margin: 1em;
                 padding: 0;
                 border: 0;
