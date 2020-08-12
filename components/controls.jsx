@@ -98,13 +98,16 @@ const Controls = ({
                 margin: 1em;
                 padding: 0;
                 border: 0;
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                align-items: space-around;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
             }
 
             fieldset[name="button container"] > span {
                 display: inline-block;
+                margin-left: 1em;
+                margin-right; 1em;
             }
 
             label {
