@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "NODE_ENV=production node server/index.js"
   },
-  "main": "server/index.js",
   "dependencies": {
     "classnames": "^2.2.6",
     "compression": "^1.7.4",

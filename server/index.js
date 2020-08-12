@@ -7,6 +7,7 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler(); //part of next config
 const compression = require('compression');
 const crypto = require('crypto');
+console.log('dev?', dev);
 
 nextApp.prepare().then(() => {
     const app = express();
