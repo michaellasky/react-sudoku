@@ -17,6 +17,9 @@ const Index = () => {
                 <Menu />
             </div>
         </main>
+        <footer>
+            <a href='https://github.com/michaellasky/react-sudoku'>https://github.com/michaellasky/react-sudoku</a>
+        </footer>
         <style jsx global>{`
             html,
             body {
@@ -30,6 +33,18 @@ const Index = () => {
             h1 {
                 text-align: center;
                 color: #fc7303;
+            }
+
+            footer {
+                width: 100%;
+                position: absolute;
+                bottom: 0;
+                padding: 1em;
+                text-align: center;
+            }
+
+            footer a {
+                color: #eeeeee;
             }
         `}</style>
         </>
