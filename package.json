@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node server/index.js"
+    "start": "NODE_ENV=production node server/index.js"
   },
   "main": "server/index.js",
   "dependencies": {
