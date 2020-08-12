@@ -55,16 +55,22 @@ function boardGenerator (
         
             return symbolKeys.map(squareIdx => 
                 symbolKeys.map(colIdx => 
-                    labelFromPosition(row(squareIdx, colIdx), col(squareIdx, colIdx))
+                    labelFromPosition(
+                        row(squareIdx, colIdx), 
+                        col(squareIdx, colIdx))
             ));
         }
         
         function generateRows () {
-            return symbolKeys.map(x => symbolKeys.map(y => labelFromPosition(x, y)));
+            return symbolKeys.map(
+                x => symbolKeys.map(
+                    y => labelFromPosition(x, y)));
         }
 
         function generateColumns () {
-            return symbolKeys.map(y => symbolKeys.map(x => labelFromPosition(x, y)));
+            return symbolKeys.map(
+                y => symbolKeys.map(
+                    x => labelFromPosition(x, y)));
         }
 
         const squares = generateSquares(squareLength);
@@ -120,8 +126,9 @@ function boardGenerator (
         const untriedVals = pVals.filter(val => !tried.includes(val));
         const value = randomPossibility(untriedVals);
         const square = squareFromPosition(x, y, config.squares);
-        
-        board[startIdx] = { value, label, square, x, y, key: startIdx };
+        const fixed = true;
+
+        board[startIdx] = { value, label, square, x, y, key: startIdx, fixed };
 
         if (typeof value === 'undefined') {
             return false;
@@ -137,9 +144,10 @@ function boardGenerator (
 
     function boardIsSolved (board) {
         function containsAllSymbols(labels) {
-            const positions = labels.map(positionFromLabel);
-            const indices = positions.map(keyFromPosition);
-            const values = indices.map(i => board[i].value);
+            const values = labels
+                .map(positionFromLabel)
+                .map(keyFromPosition)
+                .map(i => board[i].value);
 
             return symbols.reduce((acc, s) => acc && values.includes(s), true);
         }
@@ -154,7 +162,8 @@ function boardGenerator (
         
         return board.map((tileData, idx) => ({ 
             ...tileData, 
-            value: indicesToRemove.includes(idx) ? undefined : tileData.value 
+            value: indicesToRemove.includes(idx) ? undefined : tileData.value ,
+            fixed: !indicesToRemove.includes(idx)
         }));
     }
 
@@ -166,7 +175,9 @@ function boardGenerator (
         positionFromLabel,
         keyFromPosition,
         boardIsSolved,
-        solved: false
+        solved: false,
+        seed: gameSeed,
+        decimationFactor: decimationFactor
     });
 }
 

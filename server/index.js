@@ -24,10 +24,12 @@ nextApp.prepare().then(() => {
     }));
 
 
-    app.get('/', (req, res, next) => {
+    app.get('/sudoku', (req, res, next) => {
         if (!req.query.gameSeed) {
             const gameSeed = crypto.randomBytes(4).toString('hex');
-            res.redirect(`${req.url}?gameSeed=${gameSeed}`);
+            const difficulty = req.query.difficulty || 70;
+
+            res.redirect(`sudoku?gameSeed=${gameSeed}&difficulty=${difficulty}`);
         }
         next();
     });

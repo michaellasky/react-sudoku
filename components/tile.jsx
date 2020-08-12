@@ -4,14 +4,16 @@ import { useContext } from 'react';
 
 const Tile = ({ tileData, symbols, state, onSelectTile }) => {
     
-    let { key, value, notes } = tileData;
+    let { key, value, notes, fixed } = tileData;
 
     if (typeof notes === 'undefined') { notes = new Set(); } 
     
     const className = classNames({
         selected: state.selectedTile === key,
         notes: !value,
-        notesMode: state.notesMode
+        notesMode: state.notesMode,
+        fixed,
+        free: !fixed
     });
     
     function onClick () { onSelectTile(key); }
@@ -26,8 +28,8 @@ const Tile = ({ tileData, symbols, state, onSelectTile }) => {
         <style jsx>{`
             div {
                 border-radius: 0.25em;
-                background-color: #675b70;
                 color: #c0c0c0;
+                background-color: #675b70;
                 animation-duration: 0.7s;
                 animation-name: slidein;
                 line-height: 1em;
@@ -36,6 +38,10 @@ const Tile = ({ tileData, symbols, state, onSelectTile }) => {
                 display: grid;
                 justify-content: space-around;
                 align-content: space-around;
+            }
+
+            div.fixed {
+                background-color: #524755;
             }
 
             div.notes {
@@ -73,7 +79,7 @@ const Tile = ({ tileData, symbols, state, onSelectTile }) => {
                 background-color: #ffffff;
             }
 
-            div:hover {
+            div.free:hover {
                 background-color: #c0c5c1;
                 cursor: pointer;
                 color: #333333;

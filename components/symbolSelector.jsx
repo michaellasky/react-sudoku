@@ -1,6 +1,6 @@
 import { ACTIONS } from './reducer';
 
-const SymbolSelector = ({symbols, state, dispatch, onSelectSymbol }) => {
+const SymbolSelector = ({symbols, state, onSelectSymbol }) => {
 
     function onClick (symbol) {
         return () => { onSelectSymbol(symbol); };

@@ -4,41 +4,44 @@ import { ACTIONS, reducer } from './reducer';
 import Square from './square';
 import Controls from './controls';
 import classNames from 'classnames';
-import { GlobalHotKeys } from 'react-hotkeys';
 import { useHotkeys } from "react-hotkeys-hook";
 
+const SudokuBoard = ({seed, symbols, decimationFactor}) => {
 
-const SudokuBoard = ({seed, symbols}) => {
-
-    const squaredSize = Math.sqrt(symbols.length);
+    const sqrootSize = Math.sqrt(symbols.length);
+    const numTiles = Math.pow(symbols.length, 2);
     const symbolKeys = [...symbols.keys()];
     const emptySquares = [...Array(symbols.length).keys()].map(_ => '?');
-    const [state, dispatch] = useReducer(reducer, {});
+    const [state, _dispatch] = useReducer(reducer, {});
 
     const { 
         boardData, 
         config, 
         positionFromLabel, 
         keyFromPosition, 
-        boardIsSolved 
+        positionFromKey,
+        boardIsSolved
     } = state;
-    
+
     useEffect(() => {
         if (typeof seed !== 'undefined') {
-            const state = boardGenerator(seed, symbols);
-            dispatch({type: ACTIONS.SET_STATE, payload: { state }});
+            const state = boardGenerator(seed, symbols, decimationFactor);
+            dispatch(ACTIONS.SET_STATE, { state });
         }
-    }, [seed]);
+    }, [seed, decimationFactor]); 
 
-    if (!state.solved && 
-        typeof boardIsSolved === 'function' &&  
-        boardIsSolved(boardData)) 
-    {
-        dispatch({ type: ACTIONS.SET_SOLVED });
+    if (!state.solved && boardIsSolved && boardIsSolved(boardData)) {
+        dispatch(ACTIONS.SET_SOLVED);
     }
 
-    useHotkeys('n', () => dispatch({ type: ACTIONS.TOGGLE_NOTES_MODE }));
+    useHotkeys('shift+n', () => dispatch(ACTIONS.TOGGLE_NOTES_MODE));
+    useHotkeys('shift+e', () => dispatch(ACTIONS.TOGGLE_ERASE_MODE));
     symbols.forEach(s => useHotkeys(s, () => onSelectSymbol(s), [state]));
+
+
+    function dispatch(type, payload) {
+        return _dispatch({type, payload});
+    }
 
     function squareValues (squareIdx) {
         if (!state || !config) { return []; }
@@ -52,72 +55,46 @@ const SudokuBoard = ({seed, symbols}) => {
     function onSelectTile (key) {
         // This tile is already selected, deselect it
         if (state.selectedTile === key) {
-            dispatch({
-                type: ACTIONS.SET_SELECTED_TILE,
-                payload: { tile: undefined }
-            });
+            dispatch(ACTIONS.SET_SELECTED_TILE, { tile: undefined });
         }
     
-        if (state.selectedSymbol) {
+        if (state.eraseMode) {
+            dispatch(ACTIONS.SET_TILE_VALUE, { key, value: undefined });
+        }
+        else if (state.selectedSymbol) {
             if (state.notesMode) {
-                dispatch({
-                    type: ACTIONS.ADD_NOTE,
-                    payload: { key, value: state.selectedSymbol }
-                });
+                dispatch(ACTIONS.ADD_NOTE, { key, value: state.selectedSymbol });
             } 
             else {
-                dispatch({
-                    type: ACTIONS.SET_TILE_VALUE, 
-                    payload: { key, value: state.selectedSymbol }
-                });    
+                dispatch(ACTIONS.SET_TILE_VALUE, 
+                         { key, value: state.selectedSymbol });    
             }
-    
-            dispatch({
-                type: ACTIONS.SET_SELECTED_TILE,
-                payload: { tile: undefined }
-            });
+            dispatch(ACTIONS.SET_SELECTED_TILE, { tile: undefined });
         }
         else {
-            dispatch({type: ACTIONS.SET_SELECTED_TILE, payload: { tile: key }});
+            dispatch(ACTIONS.SET_SELECTED_TILE, { tile: key });
         }
     }
     
     function onSelectSymbol (symbol) {
         if (state.selectedSymbol === symbol) {
-            dispatch({
-                type: ACTIONS.SET_SELECTED_SYMBOL,
-                payload: { symbol: undefined }
-            });
+            dispatch(ACTIONS.SET_SELECTED_SYMBOL, { symbol: undefined });
         }
         else if (state.selectedTile) {
             if (state.notesMode) {
-                dispatch({
-                    type: ACTIONS.ADD_NOTE,
-                    payload: { key: state.selectedTile, value: symbol }
-                })
+                dispatch(ACTIONS.ADD_NOTE,
+                         { key: state.selectedTile, value: symbol });
             }
             else {
-                dispatch({
-                    type: ACTIONS.SET_TILE_VALUE, 
-                    payload: { key: state.selectedTile, value: symbol }
-                });
+                dispatch(ACTIONS.SET_TILE_VALUE,
+                         { key: state.selectedTile, value: symbol });
             }
             
-            dispatch({
-                type: ACTIONS.SET_SELECTED_SYMBOL,
-                payload: { symbol: undefined }
-            });
-    
-            dispatch({
-                type: ACTIONS.SET_SELECTED_TILE,
-                payload: { tile: undefined }
-            });
+            dispatch(ACTIONS.SET_SELECTED_SYMBOL, { symbol: undefined });
+            dispatch(ACTIONS.SET_SELECTED_TILE,   { tile: undefined   });
         }
         else {
-            dispatch({
-                type: ACTIONS.SET_SELECTED_SYMBOL, 
-                payload: { symbol }
-            });
+            dispatch(ACTIONS.SET_SELECTED_SYMBOL, { symbol });
         }
         
     }
@@ -135,21 +112,21 @@ const SudokuBoard = ({seed, symbols}) => {
                     <Square {...{
                         key: squareIdx, 
                         state,
-                        dispatch,
                         symbols,
                         values: squareValues(squareIdx) || emptySquares, 
                         squareIdx,
                         onSelectTile }} />)}
         </div>
 
-        <Controls {...{ symbols, state, dispatch, onSelectSymbol }} />
+        <Controls {...{ 
+            symbols, state, dispatch, onSelectSymbol }} />
         <style jsx>{`
             
             div[name="sudoku container"] {
                 display: grid;
                 padding: 1em;
-                grid-template-columns: repeat(${squaredSize}, 1fr);
-                grid-template-rows: repeat(${squaredSize}, 1fr);
+                grid-template-columns: repeat(${sqrootSize}, 1fr);
+                grid-template-rows: repeat(${sqrootSize}, 1fr);
                 grid-gap: 0.5em;
             }
 
@@ -174,6 +151,7 @@ const SudokuBoard = ({seed, symbols}) => {
             div[name="sudoku container"].solved {
                 background-color: #ff0000;
             }
+
         `}</style>
         </>
     );

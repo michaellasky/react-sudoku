@@ -1,14 +1,16 @@
 import Head from 'next/head'
 import SudokuBoard from '../components/sudokuBoard';
 import { useRouter } from 'next/router';
-import { HotKeys } from 'react-hotkeys';
+import { useState, useEffect } from 'react';
 
 const Home = () => {
   const router = useRouter();
-  const { query: { gameSeed } } = router;
+  const { query: { gameSeed, difficulty } } = router;
 
-  // const symbols = ['1','2','3','4','5','6','7','8','9'];
-  const symbols = ['a','b','c','d','e','f','g','h','i'];
+  const symbols = ['1','2','3','4','5','6','7','8','9'];
+  // const symbols = ['a','b','c','d','e','f','g','h','i'];
+
+  const decimationFactor = difficulty * 0.01;
 
   return (
   <div className="container">
@@ -20,17 +22,13 @@ const Home = () => {
 
     <main>
       <div id='page-container'>
-        <SudokuBoard seed={gameSeed} symbols={symbols} />
+        <SudokuBoard seed={gameSeed} {...{symbols, decimationFactor }} />
       </div>
     </main>
 
     <footer>
 
     </footer>
-
-    <style jsx>{`
-     
-    `}</style>
 
     <style jsx global>{`
       html,
