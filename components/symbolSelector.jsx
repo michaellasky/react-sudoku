@@ -15,7 +15,7 @@ const SymbolSelector = ({symbols, state, onSelectSymbol }) => {
                     const className = isSelected? 'selected': '';
                     
                     return (
-                        <a onClick={onClick(symbol)}>
+                        <a onClick={onClick(symbol)} key={symbol}>
                             <span className={className}>{symbol}</span>
                         </a>
                     )}

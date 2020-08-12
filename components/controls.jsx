@@ -65,12 +65,6 @@ const Controls = ({
                         Erase
                     </label>
                 </span>
-                <span>
-                    <h3>Hotkeys</h3>
-                    <p>shift + n - Toggle Notes Mode</p>
-                    <p>shift + e - Toggle Erase Mode</p>
-                    <p>{symbols[0]} - {symbols[symbols.length - 1]} - Select Symbol</p>
-                </span>
             </fieldset>
 
         </div>

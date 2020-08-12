@@ -20,7 +20,9 @@ const Tile = ({ tileData, symbols, state, onSelectTile }) => {
         <>
         <div onClick={() => onSelectTile(key)} className={className}>
             {value || symbols.map(
-                s => <span className={notes.has(s)? 'active': ''}>{s}</span>)}
+                s => <span key={s} className={notes.has(s)? 'active': ''}>
+                    {s}
+                </span>)}
         </div>
 
         <style jsx>{`
