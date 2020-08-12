@@ -7,7 +7,6 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler(); //part of next config
 const compression = require('compression');
 const crypto = require('crypto');
-console.log('dev?', dev);
 
 nextApp.prepare().then(() => {
     const app = express();
@@ -30,7 +29,7 @@ nextApp.prepare().then(() => {
             const gameSeed = crypto.randomBytes(4).toString('hex');
             const difficulty = req.query.difficulty || 70;
 
-            res.redirect(`sudoku?gameSeed=${gameSeed}&difficulty=${difficulty}`);
+            res.redirect(`sudoku?gameSeed=${gameSeed}&difficulty=${difficulty}&dev=${dev}`);
         }
         next();
     });
