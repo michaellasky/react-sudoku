@@ -125,10 +125,6 @@ const Controls = ({
                 grid-gap: 1em;
             }
 
-            input[type="range"] {
-                display: block;
-            }
-
             h3 {
                 font-size: 70%;
                 margin: 0.25em;

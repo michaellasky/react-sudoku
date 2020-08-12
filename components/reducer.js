@@ -56,7 +56,6 @@ export const reducer = (state, {type, payload}) => {
             return state;
 
         case ACTIONS.UPDATE_SEED:
-            console.log(payload)
             return {...state, seed: payload.seed };
 
         case ACTIONS.CHANGE_DIFFICULTY:

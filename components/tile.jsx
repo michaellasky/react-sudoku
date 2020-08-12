@@ -16,11 +16,9 @@ const Tile = ({ tileData, symbols, state, onSelectTile }) => {
         free: !fixed
     });
     
-    function onClick () { onSelectTile(key); }
-
     return (
         <>
-        <div {...{ onClick, className}}>
+        <div onClick={() => onSelectTile(key)} className={className}>
             {value || symbols.map(
                 s => <span className={notes.has(s)? 'active': ''}>{s}</span>)}
         </div>

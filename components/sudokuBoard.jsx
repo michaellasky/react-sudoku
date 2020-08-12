@@ -19,7 +19,6 @@ const SudokuBoard = ({seed, symbols, decimationFactor}) => {
         config, 
         positionFromLabel, 
         keyFromPosition, 
-        positionFromKey,
         boardIsSolved
     } = state;
 
@@ -53,7 +52,6 @@ const SudokuBoard = ({seed, symbols, decimationFactor}) => {
     }
 
     function onSelectTile (key) {
-        // This tile is already selected, deselect it
         if (state.selectedTile === key) {
             dispatch(ACTIONS.SET_SELECTED_TILE, { tile: undefined });
         }
