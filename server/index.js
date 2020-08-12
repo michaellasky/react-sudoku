@@ -29,7 +29,7 @@ nextApp.prepare().then(() => {
             const gameSeed = crypto.randomBytes(4).toString('hex');
             const difficulty = req.query.difficulty || 70;
 
-            res.redirect(`sudoku?gameSeed=${gameSeed}&difficulty=${difficulty}&dev=${dev}`);
+            res.redirect(`sudoku?gameSeed=${gameSeed}&difficulty=${difficulty}`);
         }
         next();
     });
